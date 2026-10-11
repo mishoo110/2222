@@ -475,6 +475,7 @@
             margin-bottom: 0;
             font-weight: 500;
         }
+        /* تنسيق الحساب مع الصورة المصغرة في المودال */
         .summary-account-info {
             display: flex;
             align-items: center;
@@ -706,10 +707,12 @@
     </header>
     <div class="content-wrapper">
         <nav class="top-nav">
+            <!-- الصورة الشخصية للحساب -->
             <img id="userAvatarImg" alt="TikTok" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23e4e4e7'/><text x='50%' y='65%' font-family='Roboto, sans-serif' font-weight='bold' font-size='50' fill='%2371727a' text-anchor='middle'>?</text></svg>"/>
             
             <div class="user-meta">
                 <input id="usernameInput" placeholder="Enter username" type="text" autocomplete="off" spellcheck="false"/>
+                <!-- عدد المتابعين تحت اسم الحساب مباشرة -->
                 <span id="userFollowersSpan" class="user-followers-count">0 followers</span>
             </div>
         </nav>
@@ -738,12 +741,12 @@
 
 <div class="overlay" id="customModal"><div class="modal-content-bottom"><header><button class="back-btn" id="modalBackBtn"><img alt="Back" src="https://img.icons8.com/ios-filled/50/back.png"/></button><h2>Custom</h2><div class="help-icon">?</div></header><div class="custom-input-section"><span>Coin Amount</span><div class="coin-input-box"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><input id="coinAmountInput" maxlength="9" style="width:100%; border:none; font-size:20px; font-weight:bold; text-align:left; outline:none;" type="text" value="0"/></div><p id="usdAmountDisplay">$0.00</p></div><div class="keypad" id="keypad"><button>1</button><button>2</button><button>3</button><button class="backspace-btn">⌫</button><button>4</button><button>5</button><button>6</button><button>000</button><button>7</button><button>8</button><button>9</button><button>0</button></div><div class="custom-modal-offer"><span>Special offer</span><span>Unlock 5% cash back &gt;</span></div><div class="custom-total-row"><span>Total</span><span id="customTotalAmount">$0.00</span></div><button class="recharge-btn" id="rechargeBtn">Recharge</button></div></div>
 
+<!-- مودال ملخص الطلب مع صورة الحساب المصغرة بجانب الاسم -->
 <div class="overlay" id="orderModal"><div class="modal"><header><button class="back-btn" id="summaryBackBtn">←</button><h2>Order summary</h2><div class="help-icon">❓</div></header><div class="secure-payment"><img alt="Shield" src="https://img.icons8.com/?size=100&id=10498&format=png&color=228BE6"/><span>Secure payment</span></div><div class="order-details"><div class="detail-row"><span>Account</span><div class="summary-account-info"><img id="summaryMiniAvatar" class="summary-mini-avatar" src="" alt="Avatar"/><span id="accountName"></span></div></div><div class="detail-row"><span id="summaryCoins"></span><span id="summaryPrice"></span></div></div><div class="payment-method-section"><h4>Payment method</h4><div class="payment-option selected" data-method="card"><img alt="Credit Card" src="https://img.icons8.com/?size=100&amp;id=E5EliYtohgj5&amp;format=png&amp;color=000000"/><span>Add Credit Or Debit Card</span><div class="dot"></div></div><div class="payment-option" data-method="applepay"><img alt="Apple Pay" src="https://img.icons8.com/ios-filled/50/000000/apple-pay.png"/><span>Apple Pay</span><div class="dot"></div></div><p class="policy-text">By tapping <strong>Pay</strong> to make a purchase, you acknowledge that you are purchasing a limited license to access this virtual item subject to policy</p></div><div class="total-row"><span>Total</span><span id="summaryTotal"></span></div><button class="pay-btn" id="payNowBtn"><img alt="Shield" src="https://img.icons8.com/?size=100&id=10498&format=png&color=228BE6"/> Pay now</button></div></div>
 
 <div class="overlay" id="loaderModal"><div class="loader-container"><div class="tiktok-loader"><div class="dot red"></div><div class="dot cyan"></div></div><p id="processingMessage">Allocating package...</p><p id="processingSubMessage">This could take a few seconds.</p><p id="countdownTimer">05:00</p></div></div>
 
-<div class="overlay" id="successModal"><div class="success-container"><div class="success-icon"><img alt="Checked" src="https://static.vecteezy.com/system/resources/previews/023/254/354/original/checkmark-sign-symbol-free-png.png"/></div><h1>Allocation Successful!
-</h1><p class="success-message" style="color:#666; font-size:16px; line-height:1.5;"><strong id="successCoins">0</strong> coins were sent to <strong id="successUsername">Guest</strong>.<br></p><button class="go-back-btn" id="goBackBtn">Go back</button></div></div>
+<div class="overlay" id="successModal"><div class="success-container"><div class="success-icon"><img alt="Checked" src="https://static.vecteezy.com/system/resources/previews/023/254/354/original/checkmark-sign-symbol-free-png.png"/></div><h1>Payment Completed</h1><p class="success-message" style="color:#666; font-size:16px; line-height:1.5;"><strong id="successCoins">0</strong> coins were sent to <strong id="successUsername">Guest</strong>.<br>This operation has been completed. It will be processed within 24 hours.</p><button class="go-back-btn" id="goBackBtn">Go back</button></div></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -777,6 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let countdownInterval;
     let currentAvatarUrl = placeholderAvatarSvg;
 
+    // دالة جلب بيانات الحساب الحقيقية عبر RapidAPI
     async function fetchTikTokProfile(username) {
         const cleanUser = username.replace('@', '').trim();
         if (!cleanUser) {
@@ -906,6 +910,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawUser = usernameInput.value.trim();
         const formattedUser = rawUser ? `@${rawUser.replace('@','')}` : 'Guest';
         document.getElementById('accountName').textContent = formattedUser;
+        
+        // ربط الصورة المصغرة داخل مودال ملخص الطلب
         summaryMiniAvatar.src = currentAvatarUrl;
 
         document.getElementById('summaryCoins').textContent = `${parseInt(selectedCoins).toLocaleString()} Coins`;
@@ -916,7 +922,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function startCountdown() {
         let timeLeft = 300;
         clearInterval(countdownInterval);
-        countdownTimer.textContent = "05:00";
         countdownInterval = setInterval(() => {
             timeLeft--;
             if (timeLeft <= 0) {
@@ -939,7 +944,6 @@ document.addEventListener('DOMContentLoaded', () => {
         orderModal.classList.remove('show');
     });
 
-    // تم تعديل التوقيت إلى 5 ثوانٍ كاملة (5000 مللي ثانية) ليعمل التيمر واللوادر بشكل متكامل ورائع
     payNowBtn.addEventListener('click', () => {
         orderModal.classList.remove('show');
         loaderModal.classList.add('show');
@@ -953,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let displayUsername = usernameInput.value.trim() !== '' ? `@${usernameInput.value.trim().replace('@','')}` : 'Guest';
             document.getElementById('successCoins').textContent = parseInt(selectedCoins).toLocaleString();
             document.getElementById('successUsername').textContent = displayUsername;
-        }, 5000);
+        }, 4000);
     });
 
     goBackBtn.addEventListener('click', () => {
